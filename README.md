@@ -13,6 +13,11 @@ public static class node{
              rst=null;
              
          }   
+         node(){
+             lst=null;
+             rst=null;
+             
+         }
 }
 public  node  insert(node root,int element){
     if(root==null){
@@ -33,49 +38,75 @@ public  node  insert(node root,int element){
     return root;
 
 }
-public void search(node root,int key){
+public node search(node root,int key){
      node current=root;
       boolean found=false;
-      while(found==false && current!=null){
+      while(found!=true && current!=null){
           
           if(current.data==key){
               
               found=true;
           }
           else if(key<current.data){
-              current.lst=current;
+              current=current.lst;
           }
           else if(key>current.data){
-              current.rst=current;
+              current=current.rst;
           }
          
       }
-      if(found==true){
-          System.out.print("element found"+current.data);
+      if(found){
+          System.out.println("element found"+current.data);
       }
       else{
-          System.out.print("element not found");
+          System.out.println("element not found");
       }
+     return current; 
       
 
 }
-public void delete(node root,int key){
-      node head=root;
-      node parent=root;
+public node delete(node root,int key){
+    
+      node head=new node();
+      head.lst=root;
+      node parent=head;
       node current=root;
       boolean found=false;
-      while(!found && current!=null){
+      while(found!=true && current!=null){
           if(current.data==key){
               
               found=true;
           }
           else if(key<current.data){
-              current.lst=current;
+              parent=current;
+              current=current.lst;
           }
           else if(key>current.data){
-              current.rst=current;
+              parent=current;
+              current=current.rst;
           }
       }
+      System.out.println("deleting:"+current.data);
+      //--------1st case-----------
+      if(current.lst==null && current.rst ==null){
+          if(parent.lst==null){
+              parent.rst=null;
+          }
+          else if(parent.rst==null){
+              
+                  parent.lst=null;
+              }
+          }
+        //-----------2nd case ------------
+      
+      if(current.rst==null){
+          parent.rst=current.lst;
+      }
+      else if(current.lst==null){
+          parent.rst=current.lst;
+      }
+      
+    return current;
       
       
     
@@ -102,11 +133,13 @@ public static void main(String args[]){
        root=tree.insert(root,arr[i]);
     }
     tree.inorder(root);
-    System.out.println("enter key :");
+    System.out.println("enter key :\n");
     int key=sc.nextInt();
     
     tree.search(root,key);
-    //tree.delete(root,key);
+    //System.out.println(dkey.data);
+    tree.delete(root,key);
+    tree.inorder(root);
     
     
 }    
