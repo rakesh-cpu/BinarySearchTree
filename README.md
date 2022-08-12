@@ -71,6 +71,7 @@ public node delete(node root,int key){
       head.lst=root;
       node parent=head;
       node current=root;
+     // char ch="l";
       boolean found=false;
       while(found!=true && current!=null){
           if(current.data==key){
@@ -78,10 +79,12 @@ public node delete(node root,int key){
               found=true;
           }
           else if(key<current.data){
+              //ch="l";
               parent=current;
               current=current.lst;
           }
           else if(key>current.data){
+              //ch="r";
               parent=current;
               current=current.rst;
           }
@@ -91,19 +94,66 @@ public node delete(node root,int key){
       if(current.lst==null && current.rst ==null){
           if(parent.lst==null){
               parent.rst=null;
+             
           }
           else if(parent.rst==null){
-              
+                  
                   parent.lst=null;
               }
           }
+          /*else if(parent.lst!=null && parent.rst!=null)
+          {
+               parent.lst=null;
+               parent.rst=null;
+          }*/
+          
+          
+      
+          
         //-----------2nd case ------------
       
-      if(current.rst==null){
-          parent.rst=current.lst;
+      if(current.rst==null && current.lst!=null){
+          if(parent.data>current.data){
+              
+          
+             parent.lst=current.lst;
+          }
+          else if(parent.data<current.data){
+              parent.rst=current.lst;
+          }
       }
-      else if(current.lst==null){
-          parent.rst=current.lst;
+      else if(current.lst==null && current.rst!=null){
+          if(parent.data>current.data){
+              parent.lst=current.rst;
+              
+          }
+          else if(parent.data<current.data){
+          parent.rst=current.rst;
+          }
+          
+      }
+      //------------3rd case----------
+      if(current.lst!=null && current.rst!=null){
+          node suc=current.rst;
+          node pre=null;
+          while(suc.lst!=null){
+              pre=suc;
+              suc=suc.lst;
+              
+          }
+          if(suc.rst!=null){
+              pre.lst=suc.rst;
+          }
+          //suc.rst=pre.rst;
+          suc.lst=current.lst;
+          if(parent.data>current.data){
+             parent.lst=suc;
+          }
+          else if(parent.data<current.data){
+              parent.rst=suc;
+          }
+          
+          
       }
       
     return current;
@@ -132,13 +182,17 @@ public static void main(String args[]){
     for(int i=0;i<size;i++){
        root=tree.insert(root,arr[i]);
     }
+    System.out.println();
     tree.inorder(root);
-    System.out.println("enter key :\n");
+    System.out.println();
+    System.out.println("enter key :");
     int key=sc.nextInt();
+    //System.out.println();
     
-    tree.search(root,key);
+    //tree.search(root,key);
     //System.out.println(dkey.data);
     tree.delete(root,key);
+    System.out.println();
     tree.inorder(root);
     
     
